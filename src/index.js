@@ -43,3 +43,22 @@ app.get("/api/books", async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 });
+
+app.post("/api/books/new", async (req, res) => {
+  try {
+    const { title, publication_year, independent, id_serie } = req.body;
+    const connection = await createConnection();  
+    const queryNewBook =
+      "INSERT INTO books (title, publication_year, independent, id_serie) VALUES (?, ?, ?, ?)";
+    const [result] = await connection.execute(queryNewBook, [
+      title,
+      publication_year,
+      independent,
+      id_serie,
+    ]);
+    await connection.end();
+    res.json({ insertId: result.insertId });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+}); 
