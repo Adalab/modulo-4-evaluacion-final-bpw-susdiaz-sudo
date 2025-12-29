@@ -6,6 +6,8 @@ const app = express();
 
 require("dotenv").config();
 
+const mysql = require("mysql2/promise");
+
 app.use(cors());
 app.use(express.json({ limit: "25Mb" }));
 
