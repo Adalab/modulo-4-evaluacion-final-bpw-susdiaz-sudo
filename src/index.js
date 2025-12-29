@@ -57,7 +57,7 @@ app.post("/api/books/new", async (req, res) => {
       id_serie,
     ]);
     await connection.end();
-    res.json({ insertId: result.insertId });
+    res.json({ status: "Book "+result.insertId+" created" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -78,8 +78,22 @@ app.post("/api/books/update/:id", async (req, res) => {
       id
     ]);
     await connection.end();
-    res.json({ affectedRows: result.affectedRows });
+    res.json({ status: "Book "+id+" updated", affectedRows: result.affectedRows });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 });
+
+app.post("/api/books/delete/:id", async (req, res) => {
+  try {
+    const { id } = req.params; 
+    const connection = await createConnection();
+    const queryDeleteBook = "DELETE FROM books WHERE id = ?";
+    const [result] = await connection.execute(queryDeleteBook, [id]);
+    await connection.end();
+    res.json({ status: "Book "+id+" deleted", affectedRows: result.affectedRows });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });  
+  }
+});
+
