@@ -5,7 +5,7 @@ import "./styles/App.scss";
 export default function App() {
   return (
     <div className="container">
-      <h1>📖 Sanderson Library</h1>
+      <h1 className="title">📖 Sanderson Library 📖</h1>
       <BookSearch />
       <BookForm />
     </div>
