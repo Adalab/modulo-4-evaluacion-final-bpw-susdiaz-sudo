@@ -1,3 +1,4 @@
+// Importing required modules
 const express = require("express");
 
 const cors = require("cors");
@@ -17,6 +18,10 @@ app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
 
+const path = require("path");
+
+// Database connection configuration
+
 const dataConnection = {
   host: process.env.MYSQL_HOST,
   port: process.env.MYSQL_PORT,
@@ -31,6 +36,8 @@ const createConnection = async () => {
   return connection;
 };
 
+// API Endpoints for Books  
+
 app.get("/api/books", async (req, res) => {
   try {
     queryOneBook =
@@ -43,6 +50,8 @@ app.get("/api/books", async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 });
+
+// Create a new book
 
 app.post("/api/books/new", async (req, res) => {
   try {
@@ -62,6 +71,8 @@ app.post("/api/books/new", async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 }); 
+
+// Update an existing book
 
 app.post("/api/books/update/:id", async (req, res) => {
   try {
@@ -84,6 +95,8 @@ app.post("/api/books/update/:id", async (req, res) => {
   }
 });
 
+// Delete a book
+
 app.post("/api/books/delete/:id", async (req, res) => {
   try {
     const { id } = req.params; 
@@ -95,5 +108,13 @@ app.post("/api/books/delete/:id", async (req, res) => {
   } catch (error) {
     return res.status(500).json({ message: error.message });  
   }
+});
+
+// Serve static files for frontend
+
+app.use(express.static(path.join(__dirname, "../client/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/dist/index.html"));
 });
 
