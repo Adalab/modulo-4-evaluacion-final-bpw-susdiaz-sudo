@@ -62,3 +62,24 @@ app.post("/api/books/new", async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 }); 
+
+app.post("/api/books/update/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, publication_year, independent, id_serie } = req.body;
+    const connection = await createConnection();
+    const queryUpdateBook =
+      "UPDATE books SET title = ?, publication_year = ?, independent = ?, id_serie = ? WHERE id = ?";
+    const [result] = await connection.execute(queryUpdateBook, [
+      title,
+      publication_year,
+      independent,
+      id_serie,
+      id
+    ]);
+    await connection.end();
+    res.json({ affectedRows: result.affectedRows });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+});
