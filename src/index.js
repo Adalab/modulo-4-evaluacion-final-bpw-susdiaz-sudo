@@ -110,9 +110,9 @@ app.post("/api/books/delete/:id", async (req, res) => {
   }
 });
 
-// Serve static files for frontend
+// Server static files for frontend
 
-app.use(express.static(path.join(__dirname, "../client/dist")));
+app.use(express.static(path.join(__dirname, "..", "frontend-static")));
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/dist/index.html"));
